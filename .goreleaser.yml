@@ -12,12 +12,22 @@ builds:
     env:
       - CGO_ENABLED=0
 archives:
-  - format: binary # 複数ファイルの zip とかじゃなくて単一のバイナリファイル配布にする (展開が面倒)
-    name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
-    replacements:
-      darwin: Darwin
-      linux: Linux
-      amd64: x86_64
+-
+  id: archive-version
+  format: binary # 複数ファイルの zip とかじゃなくて単一のバイナリファイル配布にする (展開が面倒)
+  name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  replacements:
+    darwin: Darwin
+    linux: Linux
+    amd64: x86_64
+-
+  id: archive-no-version
+  format: binary # 複数ファイルの zip とかじゃなくて単一のバイナリファイル配布にする (展開が面倒)
+  name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  replacements:
+    darwin: Darwin
+    linux: Linux
+    amd64: x86_64
 checksum:
   name_template: checksums.txt
 snapshot:
