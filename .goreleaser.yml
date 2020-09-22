@@ -1,0 +1,26 @@
+builds:
+  - goos: # default では linux と darwin だけだけど windows 用のバイナリも作るようにしてみる
+      - linux
+      - darwin
+    goarch: # default では 386 と amd64 だけど今更 32bit は不要かなと
+      - amd64
+    ldflags: # code 側で version の更新が不要で便利
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.ShortCommit}}
+      - -X main.date={{.Date}}
+    env:
+      - CGO_ENABLED=0
+archives:
+  - format: binary # 複数ファイルの zip とかじゃなくて単一のバイナリファイル配布にする (展開が面倒)
+    name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    replacements:
+      darwin: Darwin
+      linux: Linux
+      amd64: x86_64
+checksum:
+  name_template: checksums.txt
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  skip: true
